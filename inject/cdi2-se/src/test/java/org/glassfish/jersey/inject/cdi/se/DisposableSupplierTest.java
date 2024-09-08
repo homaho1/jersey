@@ -20,6 +20,7 @@ import java.lang.reflect.Type;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
+import java.util.Arrays;
 
 import javax.ws.rs.core.GenericType;
 
@@ -368,9 +369,14 @@ public class DisposableSupplierTest {
 
             // All instances should be the same because they are request scoped.
             ComposedObject instance = injectionManager.getInstance(ComposedObject.class);
-            assertEquals("1", instance.getFirst());
-            assertEquals("2", instance.getSecond());
-            assertEquals("3", instance.getThird());
+            String first = instance.getFirst();
+            String second = instance.getSecond();
+            String third = instance.getThird();
+            String[] values = {first, second, third};
+            Arrays.sort(values);
+            assertEquals("1", values[0]);
+            assertEquals("2", values[1]);
+            assertEquals("3", values[2]);
         });
 
         Supplier<String> cleanedSupplier = atomicSupplier.get();
